@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>WeatherWise</title>
+
+		<script src="starterCode.js"></script>
+	
+		<!-- The Stylesheet -->
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1>WeatherWise Forecast</h1>
+		<tr>
+			<td><input type="text" value="" id="zip"></td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" value="Take me there" onclick="getWeather()">
+			</td>
+		</tr>
+		<div class="temperature" id="temperature">
+			Please enter a zip code
+		</div>
+		<div id="conditions" class="image" style="">
+			<div id="transbox" class="transbox" style="">
+			</div>
+		</div>
+    </body>
+
+</html>
