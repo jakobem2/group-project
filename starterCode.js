@@ -30,7 +30,7 @@ function processResponse(wxObject,rawResponse){
 	if (n < wxObject.sys.sunrise) {document.body.style.backgroundColor = "black";
 									document.getElementById("temperature").style.color = "white";
 									var result = result+" The sun has set.";}
-	else if (wxObject.sys.sunrise <= n < wxObject.sys.sunset) {document.body.style.backgroundColor = "white";
+	else if (wxObject.sys.sunrise <= n && n < wxObject.sys.sunset) {document.body.style.backgroundColor = "white";
 									document.getElementById("temperature").style.color = "black";
 									var result = result+" The sun is up.";}
 	else if (n >= wxObject.sys.sunset) {document.body.style.backgroundColor = "black";
