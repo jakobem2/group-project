@@ -24,8 +24,7 @@ function processResponse(wxObject,rawResponse){
 	// Image
 	document.getElementById("conditions").style='background:url('+wxObject.weather[0].main+'.jpg) repeat';
 	// Day/night stuff
-	alert(rawResponse);
-	var n = wxObject.dt
+	var n = wxObject.dt;
 	if (n < wxObject.sys.sunrise) {document.body.style.backgroundColor = "black";
 									document.getElementById("temperature").style.color = "white";
 									var result = result+" The sun has set.";}
