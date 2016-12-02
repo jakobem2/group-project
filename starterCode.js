@@ -24,7 +24,7 @@ function processResponse(wxObject,rawResponse){
 	// Image
 	document.getElementById("conditions").style='background:url('+wxObject.weather[0].main+'.jpg) repeat';
 	// Day/night stuff
-	var n = wxObject.dt;
+	var n = wxObject.dt
 	if (n < wxObject.sys.sunrise) {document.body.style.backgroundColor = "black";
 									document.getElementById("temperature").style.color = "white";
 									var result = result+" The sun has set.";}
@@ -49,6 +49,59 @@ function processResponse(wxObject,rawResponse){
 	}
 	// Sending info to HTML
 	document.getElementById("temperature").innerHTML=result;
+	// Map
+	document.getElementById("basicMap").innerHTML="";
+	var map;
+
+	//Center (Mercator)
+	var y = wxObject.coord.lat;
+	var x = wxObject.coord.lon;
+
+	// Conversion
+	function deg_rad(ang) {
+		return ang * (Math.PI/180.0)
+	}
+	function merc_x(lon) {
+		var r_major = 6378137.000;
+		return r_major * deg_rad(lon);
+	}
+	function merc_y(lat) {
+		if (lat > 89.5)
+			lat = 89.5;
+		if (lat < -89.5)
+			lat = -89.5;
+		var r_major = 6378137.000;
+		var r_minor = 6356752.3142;
+		var tom = r_minor / r_major;
+		var es = 1.0 - (tom * tom);
+		var eccent = Math.sqrt(es);
+		var phi = deg_rad(lat);
+		var sinphi = Math.sin(phi);
+		var con = eccent * sinphi;
+		var com = .5 * eccent;
+		con = Math.pow((1.0-con)/(1.0+con), com);
+		var ts = Math.tan(.5 * (Math.PI*0.5 - phi))/con;
+		var y = 0 - r_major * Math.log(ts);
+		return y;
+	}
+	function merc(x,y) {
+		return [merc_x(x),merc_y(y)];
+	}
+
+	var lonlat = new OpenLayers.LonLat(merc_x(x), merc_y(y));
+
+        map = new OpenLayers.Map("basicMap");
+
+	// map layer OSM
+        var mapnik = new OpenLayers.Layer.OSM();
+
+	//connect layers to map
+	map.addLayers([mapnik]);
+
+	// Add Layer switcher
+	map.addControl(new OpenLayers.Control.LayerSwitcher());       	
+
+	map.setCenter( lonlat, 10 );
 }
 
 function processError(){
@@ -58,6 +111,7 @@ function processError(){
 	document.getElementById("temperature").innerHTML="Something went wrong! Please try again.";
 	document.getElementById("conditions").style='background:url(try.jpg) repeat';
 	document.getElementById("transbox").style.backgroundColor = ""
+	document.getElementById("conditions").style.width = "100%"
 	}   
 
 
